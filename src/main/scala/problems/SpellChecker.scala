@@ -16,7 +16,7 @@ class SpellChecker(dictionary: String) {
     lazy val originalWord: Set[String] = knownWords(Set(word))
     lazy val editDistance1Words: Set[String] = editDistance1(word)
     lazy val knownEditDistance1Words: Set[String] = knownWords(editDistance1Words)
-    lazy val editDistance2Words: Set[String] = editDistance1Words.flatMap(w => editDistance1(w))
+    lazy val editDistance2Words: Set[String] = editDistance1Words.flatMap(w => knownWords(editDistance1(w)))
 
     lazy val candidates = Seq(originalWord, knownEditDistance1Words, editDistance2Words)
 
@@ -50,17 +50,13 @@ object SpellChecker {
     (delete ++ transpose ++ replace ++ inserts).toSet
   }
 
-}
-
-object SolutionX {
-
   def main(args: Array[String]) {
 
     val source = scala.io.Source.fromFile("data.txt")
     val lines = try source.mkString finally source.close()
 
     val checker = new SpellChecker(lines)
-    
+
     val sc = new java.util.Scanner(System.in)
 
     val N = sc.nextInt()
@@ -74,4 +70,5 @@ object SolutionX {
     }
 
   }
+
 }

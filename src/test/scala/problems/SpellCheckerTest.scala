@@ -7,7 +7,7 @@ import scala.collection.mutable
 /**
   * Created by simonsaffer on 2015-12-26.
   */
-class SpellChecker$Test extends FunSuite {
+class SpellCheckerTest extends FunSuite {
 
   test("Test editDistance1") {
 
@@ -50,6 +50,34 @@ class SpellChecker$Test extends FunSuite {
     assertResult(3)(frequencies("b"))
     assertResult(1)(frequencies("c"))
     assertResult(1)(frequencies("d"))
+
+  }
+
+  test("Test correct") {
+
+    val checker = new SpellChecker("how now brown cow now")
+
+    assertResult("how")(checker.correct("hw"))
+    assertResult("how")(checker.correct("hwo"))
+
+    assertResult("now")(checker.correct("nw"))
+    assertResult("now")(checker.correct("naw"))
+    assertResult("now")(checker.correct("naow"))
+
+    assertResult("brown")(checker.correct("brow"))
+    assertResult("brown")(checker.correct("bron"))
+    assertResult("brown")(checker.correct("bronw"))
+
+    assertResult("cow")(checker.correct("cw"))
+    assertResult("cow")(checker.correct("cowe"))
+    assertResult("cow")(checker.correct("caw"))
+    assertResult("cow")(checker.correct("caw"))
+
+    assertResult("now")(checker.correct("cnow"))
+
+    //TODO make this test pass assertResult("how")(checker.correct("woh"))
+
+    assertResult("shenanigans")(checker.correct("shenanigans"))
 
   }
 
